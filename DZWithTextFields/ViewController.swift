@@ -11,10 +11,6 @@ protocol Delegate {
     func fillThelabelWith(info: String)
 }
 
-class ClassDelegate {
-    var delegate: Delegate?
-}
-
 class ViewController: UIViewController, Delegate  {
     
     var labelAtView1: UILabel = {
