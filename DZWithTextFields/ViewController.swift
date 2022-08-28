@@ -7,40 +7,7 @@
 
 import UIKit
 
-protocol Delegate {
-    func fillThelabelWith(info: String)
-}
-
-class TextFieldsDelegate {
-    var delegate: Delegate?
-    
-    var firstTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Enter First Name"
-        textField.borderStyle = .roundedRect
-        return textField
-    }()
-    
-    var middleTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Enter Middle Name"
-        textField.borderStyle = .roundedRect
-        return textField
-    }()
-    
-    var lastTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Enter Last Name"
-        textField.borderStyle = .roundedRect
-        return textField
-    }()
-    
-}
-
-class ViewController: UIViewController, Delegate {
+class ViewController: UIViewController, ViewTopDelegate {
     
     var labelAtView1: UILabel = {
         let label = UILabel()
@@ -49,40 +16,9 @@ class ViewController: UIViewController, Delegate {
         return label
     }()
     
-    var firstLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "First"
-        return label
-    }()
+    var textFields = ViewTop()
     
-    var middleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Middle"
-        return label
-    }()
-    
-    var lastLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Last"
-        return label
-    }()
-    
-    let image1: UIImageView = {
-        let image = UIImageView(image: UIImage(named: "apple"))
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
-    }()
-    
-    var textFields = TextFieldsDelegate()
-    
-//    var middleTextField: UITextField?
-//
-//    var lastTextField: UITextField?
-    
-    let view1: UIView = {
+    let viewCenter: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .gray
@@ -90,9 +26,11 @@ class ViewController: UIViewController, Delegate {
         return view
     }()
     
-    let view2: UIView = {
+    let viewBottom: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .gray
+        view.layer.cornerRadius = 10
         return view
     }()
     
@@ -126,78 +64,52 @@ class ViewController: UIViewController, Delegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(view1)
-        view.addSubview(view2)
-        view1.addSubview(labelAtView1)
-        view2.addSubview(image1)
-        view2.addSubview(textFields.firstTextField)
-        view2.addSubview(textFields.middleTextField)
-        view2.addSubview(textFields.lastTextField)
-        view2.addSubview(firstLabel)
-        view2.addSubview(middleLabel)
-        view2.addSubview(lastLabel)
+        view.addSubview(viewCenter)
+        view.addSubview(textFields.viewTop)
+        viewCenter.addSubview(labelAtView1)
+        textFields.viewTop.addSubview(textFields.image1)
+        textFields.viewTop.addSubview(textFields.firstTextField)
+        textFields.viewTop.addSubview(textFields.middleTextField)
+        textFields.viewTop.addSubview(textFields.lastTextField)
+        textFields.viewTop.addSubview(textFields.firstLabel)
+        textFields.viewTop.addSubview(textFields.middleLabel)
+        textFields.viewTop.addSubview(textFields.lastLabel)
+        
         view.addSubview(saveButton)
         view.addSubview(cancelButton)
         view.addSubview(clearButton)
         
         setupLabelAtView1()
-        setupImage1()
-        setupFirstTextField()
-        setupMiddleTextField()
-        setupLastTextField()
-        setupView1()
-        setupView2()
+        textFields.setupImage1()
+        textFields.setupFirstTextField()
+        textFields.setupMiddleTextField()
+        textFields.setupLastTextField()
+        setupViewCenter()
+        setupViewTop()
         setupSaveButton()
         setupCancelButton()
         setupClearButton()
-        setupFirstLabel()
-        setupMiddleLabel()
-        setupLastLabel()
+        textFields.setupFirstLabel()
+        textFields.setupMiddleLabel()
+        textFields.setupLastLabel()
     }
     func setupLabelAtView1() {
-        labelAtView1.leftAnchor.constraint(equalTo: view1.leftAnchor, constant: 5).isActive = true
-        labelAtView1.topAnchor.constraint(equalTo: view1.topAnchor, constant: 10).isActive = true
+        labelAtView1.leftAnchor.constraint(equalTo: viewCenter.leftAnchor, constant: 5).isActive = true
+        labelAtView1.topAnchor.constraint(equalTo: viewCenter.topAnchor, constant: 10).isActive = true
     }
     
-    func setupImage1() {
-        image1.leftAnchor.constraint(equalTo: view2.leftAnchor).isActive = true
-        image1.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        image1.topAnchor.constraint(equalTo: view2.topAnchor, constant: 50).isActive = true
+    func setupViewTop() {
+        textFields.viewTop.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
+        textFields.viewTop.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        textFields.viewTop.bottomAnchor.constraint(equalTo: viewCenter.topAnchor, constant: 5).isActive = true
+        textFields.viewTop.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
     }
     
-    func setupFirstTextField() {
-        textFields.firstTextField.leftAnchor.constraint(equalTo: firstLabel.rightAnchor).isActive = true
-        textFields.firstTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
-        textFields.firstTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
-        textFields.firstTextField.bottomAnchor.constraint(equalTo: textFields.middleTextField.topAnchor, constant: -10).isActive = true
-    }
-    
-    func setupMiddleTextField() {
-        textFields.middleTextField.leftAnchor.constraint(equalTo: middleLabel.rightAnchor, constant: 10).isActive = true
-        textFields.middleTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
-        textFields.middleTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
-        textFields.middleTextField.bottomAnchor.constraint(equalTo: textFields.lastTextField.topAnchor, constant: -10).isActive = true
-    }
-    
-    func setupLastTextField() {
-        textFields.lastTextField.leftAnchor.constraint(equalTo: lastLabel.rightAnchor, constant: 10).isActive = true
-        textFields.lastTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
-        textFields.lastTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
-        textFields.lastTextField.bottomAnchor.constraint(equalTo: view2.bottomAnchor, constant: -15).isActive = true
-    }
-    
-    func setupView1() {
-        view1.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        view1.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        view1.topAnchor.constraint(equalTo: image1.bottomAnchor, constant: 10).isActive = true
-        view1.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: 10).isActive = true
-    }
-    
-    func setupView2() {
-        view2.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        view2.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        view2.bottomAnchor.constraint(equalTo: view1.topAnchor, constant: 5).isActive = true
-        view2.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+    func setupViewCenter() {
+        viewCenter.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
+        viewCenter.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        viewCenter.topAnchor.constraint(equalTo: textFields.image1.bottomAnchor, constant: 10).isActive = true
+        viewCenter.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: 10).isActive = true
     }
     
     func setupSaveButton() {
@@ -219,30 +131,6 @@ class ViewController: UIViewController, Delegate {
         clearButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/4).isActive = true
         clearButton.heightAnchor.constraint(equalToConstant: 100).isActive = true
         clearButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true
-    }
-    
-    func setupFirstLabel() {
-        firstLabel.leftAnchor.constraint(equalTo: image1.rightAnchor, constant: 10).isActive = true
-        firstLabel.rightAnchor.constraint(equalTo: textFields.firstTextField.leftAnchor, constant: -5).isActive = true
-        firstLabel.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/7).isActive = true
-        firstLabel.bottomAnchor.constraint(equalTo: middleLabel.topAnchor, constant: -20).isActive = true
-        firstLabel.topAnchor.constraint(equalTo: view2.topAnchor, constant: 50).isActive = true
-    }
-    
-    func setupMiddleLabel() {
-        middleLabel.leftAnchor.constraint(equalTo: image1.rightAnchor, constant: 10).isActive = true
-        middleLabel.rightAnchor.constraint(equalTo: textFields.middleTextField.leftAnchor, constant: -5).isActive = true
-        middleLabel.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/7).isActive = true
-        middleLabel.bottomAnchor.constraint(equalTo: lastLabel.topAnchor).isActive = true
-        middleLabel.topAnchor.constraint(equalTo: textFields.firstTextField.bottomAnchor, constant: 20).isActive = true
-    }
-    
-    func setupLastLabel() {
-        lastLabel.leftAnchor.constraint(equalTo: image1.rightAnchor, constant: 10).isActive = true
-        lastLabel.rightAnchor.constraint(equalTo: textFields.lastTextField.leftAnchor, constant: -5).isActive = true
-        lastLabel.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/7).isActive = true
-        lastLabel.bottomAnchor.constraint(equalTo: view2.bottomAnchor).isActive = true
-        lastLabel.topAnchor.constraint(equalTo: textFields.middleTextField.bottomAnchor, constant: -5).isActive = true
     }
     
     @objc func actionSaveButton(sender: UIButton) {
@@ -273,4 +161,3 @@ class ViewController: UIViewController, Delegate {
     }
     
 }
-
