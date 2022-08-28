@@ -9,30 +9,8 @@ import UIKit
 
 class ViewController: UIViewController, ViewTopDelegate {
     
-    var labelAtView1: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Notes:"
-        return label
-    }()
-    
-    var textFields = ViewTop()
-    
-    let viewCenter: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .gray
-        view.layer.cornerRadius = 10
-        return view
-    }()
-    
-    let viewBottom: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .gray
-        view.layer.cornerRadius = 10
-        return view
-    }()
+    var viewTop2 = ViewTop()
+    var viewCenter2 = ViewCenter()
     
     let saveButton: UIButton = {
         let button = UIButton(type: .system)
@@ -64,52 +42,48 @@ class ViewController: UIViewController, ViewTopDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(viewCenter)
-        view.addSubview(textFields.viewTop)
-        viewCenter.addSubview(labelAtView1)
-        textFields.viewTop.addSubview(textFields.image1)
-        textFields.viewTop.addSubview(textFields.firstTextField)
-        textFields.viewTop.addSubview(textFields.middleTextField)
-        textFields.viewTop.addSubview(textFields.lastTextField)
-        textFields.viewTop.addSubview(textFields.firstLabel)
-        textFields.viewTop.addSubview(textFields.middleLabel)
-        textFields.viewTop.addSubview(textFields.lastLabel)
+        view.addSubview(viewCenter2.viewCenter)
+        view.addSubview(viewTop2.viewTop)
+        viewCenter2.viewCenter.addSubview(viewCenter2.labelAtView1)
+        viewTop2.viewTop.addSubview(viewTop2.image1)
+        viewTop2.viewTop.addSubview(viewTop2.firstTextField)
+        viewTop2.viewTop.addSubview(viewTop2.middleTextField)
+        viewTop2.viewTop.addSubview(viewTop2.lastTextField)
+        viewTop2.viewTop.addSubview(viewTop2.firstLabel)
+        viewTop2.viewTop.addSubview(viewTop2.middleLabel)
+        viewTop2.viewTop.addSubview(viewTop2.lastLabel)
         
         view.addSubview(saveButton)
         view.addSubview(cancelButton)
         view.addSubview(clearButton)
         
-        setupLabelAtView1()
-        textFields.setupImage1()
-        textFields.setupFirstTextField()
-        textFields.setupMiddleTextField()
-        textFields.setupLastTextField()
+        viewCenter2.setupLabelAtView1()
+        viewTop2.setupImage1()
+        viewTop2.setupFirstTextField()
+        viewTop2.setupMiddleTextField()
+        viewTop2.setupLastTextField()
         setupViewCenter()
         setupViewTop()
         setupSaveButton()
         setupCancelButton()
         setupClearButton()
-        textFields.setupFirstLabel()
-        textFields.setupMiddleLabel()
-        textFields.setupLastLabel()
-    }
-    func setupLabelAtView1() {
-        labelAtView1.leftAnchor.constraint(equalTo: viewCenter.leftAnchor, constant: 5).isActive = true
-        labelAtView1.topAnchor.constraint(equalTo: viewCenter.topAnchor, constant: 10).isActive = true
+        viewTop2.setupFirstLabel()
+        viewTop2.setupMiddleLabel()
+        viewTop2.setupLastLabel()
     }
     
     func setupViewTop() {
-        textFields.viewTop.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        textFields.viewTop.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        textFields.viewTop.bottomAnchor.constraint(equalTo: viewCenter.topAnchor, constant: 5).isActive = true
-        textFields.viewTop.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        viewTop2.viewTop.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
+        viewTop2.viewTop.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        viewTop2.viewTop.bottomAnchor.constraint(equalTo: viewCenter2.viewCenter.topAnchor, constant: 5).isActive = true
+        viewTop2.viewTop.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
     }
     
     func setupViewCenter() {
-        viewCenter.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        viewCenter.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        viewCenter.topAnchor.constraint(equalTo: textFields.image1.bottomAnchor, constant: 10).isActive = true
-        viewCenter.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: 10).isActive = true
+        viewCenter2.viewCenter.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
+        viewCenter2.viewCenter.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        viewCenter2.viewCenter.topAnchor.constraint(equalTo: viewTop2.image1.bottomAnchor, constant: 10).isActive = true
+        viewCenter2.viewCenter.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: 10).isActive = true
     }
     
     func setupSaveButton() {
@@ -136,12 +110,12 @@ class ViewController: UIViewController, ViewTopDelegate {
     @objc func actionSaveButton(sender: UIButton) {
         print("Save button tapped!")
         
-        fillThelabelWith(info: (textFields.firstTextField.text ?? "Error") + (textFields.middleTextField.text ?? "Error") + (textFields.lastTextField.text ?? "Error"))
+        fillThelabelWith(info: (viewTop2.firstTextField.text ?? "Error") + (viewTop2.middleTextField.text ?? "Error") + (viewTop2.lastTextField.text ?? "Error"))
         
-        textFields.firstTextField.text = ""
-        textFields.middleTextField.text = ""
-        textFields.lastTextField.text = ""
-        textFields.delegate = self
+        viewTop2.firstTextField.text = ""
+        viewTop2.middleTextField.text = ""
+        viewTop2.lastTextField.text = ""
+        viewTop2.delegate = self
         
     }
     
@@ -152,11 +126,11 @@ class ViewController: UIViewController, ViewTopDelegate {
     
     @objc func actionClearButton(sender: UIButton) {
         print("Clear button tapped!")
-        labelAtView1.text = "Notes:"
+        viewCenter2.labelAtView1.text = "Notes:"
     }
     
     func fillThelabelWith(info: String) {
-        labelAtView1.text = info
+        viewCenter2.labelAtView1.text = info
         
     }
     
