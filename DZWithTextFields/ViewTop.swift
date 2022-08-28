@@ -14,7 +14,6 @@ protocol ViewTopDelegate {
 
 class ViewTop {
     var delegate: ViewTopDelegate?
-    var viewController: ViewController!
     
     let viewTop: UIView = {
         let view = UIView()
