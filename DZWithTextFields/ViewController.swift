@@ -11,7 +11,36 @@ protocol Delegate {
     func fillThelabelWith(info: String)
 }
 
-class ViewController: UIViewController, Delegate  {
+class TextFieldsDelegate {
+    var delegate: Delegate?
+    
+    var firstTextField: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.placeholder = "Enter First Name"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
+    var middleTextField: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.placeholder = "Enter Middle Name"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
+    var lastTextField: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.placeholder = "Enter Last Name"
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
+}
+
+class ViewController: UIViewController, Delegate {
     
     var labelAtView1: UILabel = {
         let label = UILabel()
@@ -47,29 +76,11 @@ class ViewController: UIViewController, Delegate  {
         return image
     }()
     
-    let firstTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Enter First Name"
-        textField.borderStyle = .roundedRect
-        return textField
-    }()
+    var textFields = TextFieldsDelegate()
     
-    let middleTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Enter Middle Name"
-        textField.borderStyle = .roundedRect
-        return textField
-    }()
-    
-    let lastTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Enter Last Name"
-        textField.borderStyle = .roundedRect
-        return textField
-    }()
+//    var middleTextField: UITextField?
+//
+//    var lastTextField: UITextField?
     
     let view1: UIView = {
         let view = UIView()
@@ -119,9 +130,9 @@ class ViewController: UIViewController, Delegate  {
         view.addSubview(view2)
         view1.addSubview(labelAtView1)
         view2.addSubview(image1)
-        view2.addSubview(firstTextField)
-        view2.addSubview(middleTextField)
-        view2.addSubview(lastTextField)
+        view2.addSubview(textFields.firstTextField)
+        view2.addSubview(textFields.middleTextField)
+        view2.addSubview(textFields.lastTextField)
         view2.addSubview(firstLabel)
         view2.addSubview(middleLabel)
         view2.addSubview(lastLabel)
@@ -155,24 +166,24 @@ class ViewController: UIViewController, Delegate  {
     }
     
     func setupFirstTextField() {
-        firstTextField.leftAnchor.constraint(equalTo: firstLabel.rightAnchor).isActive = true
-        firstTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
-        firstTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
-        firstTextField.bottomAnchor.constraint(equalTo: middleTextField.topAnchor, constant: -10).isActive = true
+        textFields.firstTextField.leftAnchor.constraint(equalTo: firstLabel.rightAnchor).isActive = true
+        textFields.firstTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
+        textFields.firstTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
+        textFields.firstTextField.bottomAnchor.constraint(equalTo: textFields.middleTextField.topAnchor, constant: -10).isActive = true
     }
     
     func setupMiddleTextField() {
-        middleTextField.leftAnchor.constraint(equalTo: middleLabel.rightAnchor, constant: 10).isActive = true
-        middleTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
-        middleTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
-        middleTextField.bottomAnchor.constraint(equalTo: lastTextField.topAnchor, constant: -10).isActive = true
+        textFields.middleTextField.leftAnchor.constraint(equalTo: middleLabel.rightAnchor, constant: 10).isActive = true
+        textFields.middleTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
+        textFields.middleTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
+        textFields.middleTextField.bottomAnchor.constraint(equalTo: textFields.lastTextField.topAnchor, constant: -10).isActive = true
     }
     
     func setupLastTextField() {
-        lastTextField.leftAnchor.constraint(equalTo: lastLabel.rightAnchor, constant: 10).isActive = true
-        lastTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
-        lastTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
-        lastTextField.bottomAnchor.constraint(equalTo: view2.bottomAnchor, constant: -15).isActive = true
+        textFields.lastTextField.leftAnchor.constraint(equalTo: lastLabel.rightAnchor, constant: 10).isActive = true
+        textFields.lastTextField.rightAnchor.constraint(equalTo: view2.rightAnchor).isActive = true
+        textFields.lastTextField.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/2).isActive = true
+        textFields.lastTextField.bottomAnchor.constraint(equalTo: view2.bottomAnchor, constant: -15).isActive = true
     }
     
     func setupView1() {
@@ -212,7 +223,7 @@ class ViewController: UIViewController, Delegate  {
     
     func setupFirstLabel() {
         firstLabel.leftAnchor.constraint(equalTo: image1.rightAnchor, constant: 10).isActive = true
-        firstLabel.rightAnchor.constraint(equalTo: firstTextField.leftAnchor, constant: -5).isActive = true
+        firstLabel.rightAnchor.constraint(equalTo: textFields.firstTextField.leftAnchor, constant: -5).isActive = true
         firstLabel.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/7).isActive = true
         firstLabel.bottomAnchor.constraint(equalTo: middleLabel.topAnchor, constant: -20).isActive = true
         firstLabel.topAnchor.constraint(equalTo: view2.topAnchor, constant: 50).isActive = true
@@ -220,28 +231,29 @@ class ViewController: UIViewController, Delegate  {
     
     func setupMiddleLabel() {
         middleLabel.leftAnchor.constraint(equalTo: image1.rightAnchor, constant: 10).isActive = true
-        middleLabel.rightAnchor.constraint(equalTo: middleTextField.leftAnchor, constant: -5).isActive = true
+        middleLabel.rightAnchor.constraint(equalTo: textFields.middleTextField.leftAnchor, constant: -5).isActive = true
         middleLabel.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/7).isActive = true
         middleLabel.bottomAnchor.constraint(equalTo: lastLabel.topAnchor).isActive = true
-        middleLabel.topAnchor.constraint(equalTo: firstTextField.bottomAnchor, constant: 20).isActive = true
+        middleLabel.topAnchor.constraint(equalTo: textFields.firstTextField.bottomAnchor, constant: 20).isActive = true
     }
     
     func setupLastLabel() {
         lastLabel.leftAnchor.constraint(equalTo: image1.rightAnchor, constant: 10).isActive = true
-        lastLabel.rightAnchor.constraint(equalTo: lastTextField.leftAnchor, constant: -5).isActive = true
+        lastLabel.rightAnchor.constraint(equalTo: textFields.lastTextField.leftAnchor, constant: -5).isActive = true
         lastLabel.widthAnchor.constraint(equalTo: view2.widthAnchor, multiplier: 1/7).isActive = true
         lastLabel.bottomAnchor.constraint(equalTo: view2.bottomAnchor).isActive = true
-        lastLabel.topAnchor.constraint(equalTo: middleTextField.bottomAnchor, constant: -5).isActive = true
+        lastLabel.topAnchor.constraint(equalTo: textFields.middleTextField.bottomAnchor, constant: -5).isActive = true
     }
     
     @objc func actionSaveButton(sender: UIButton) {
         print("Save button tapped!")
         
-        fillThelabelWith(info: (firstTextField.text ?? "Error!") + (middleTextField.text ?? "Error!") + (lastTextField.text ?? "Error!"))
+        fillThelabelWith(info: (textFields.firstTextField.text ?? "Error") + (textFields.middleTextField.text ?? "Error") + (textFields.lastTextField.text ?? "Error"))
         
-        firstTextField.text = ""
-        middleTextField.text = ""
-        lastTextField.text = ""
+        textFields.firstTextField.text = ""
+        textFields.middleTextField.text = ""
+        textFields.lastTextField.text = ""
+        textFields.delegate = self
         
     }
     
@@ -257,6 +269,7 @@ class ViewController: UIViewController, Delegate  {
     
     func fillThelabelWith(info: String) {
         labelAtView1.text = info
+        
     }
     
 }
